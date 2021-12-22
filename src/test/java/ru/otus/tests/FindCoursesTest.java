@@ -8,10 +8,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.*;
-import utils.listeners.MyListeners;
 import java.util.concurrent.TimeUnit;
 
-@Listeners(MyListeners.class)
 
 public class FindCoursesTest {
 

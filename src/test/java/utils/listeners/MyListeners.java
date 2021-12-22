@@ -3,8 +3,9 @@ package utils.listeners;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.events.WebDriverEventListener;
+import org.testng.ITestNGListener;
 
-public class MyListeners extends AllListeners implements WebDriverEventListener {
+public class MyListeners implements WebDriverEventListener, ITestNGListener {
     @Override
     public void beforeAlertAccept(WebDriver driver) {
 
