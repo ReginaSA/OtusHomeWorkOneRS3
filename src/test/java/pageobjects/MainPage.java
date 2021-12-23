@@ -5,7 +5,6 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -15,12 +14,6 @@ public class MainPage extends BasePage{
 
     public MainPage(WebDriver driver) {
         super(driver);
-        PageFactory.initElements(driver, this);
-    }
-
-    @Override
-    public void init(final WebDriver driver) {
-        PageFactory.initElements(driver, this);
     }
 
     String pageUrl = "https://otus.ru/";
@@ -30,6 +23,9 @@ public class MainPage extends BasePage{
 
     @FindBy(xpath = "//a[contains(@class,'transitional-main__courses-more')]")
     WebElement openMoreCourses;
+
+    @FindBy(xpath = "//div[contains(@class, 'lessons__new-item-title')]")
+    WebElement lessonTitle;
 
     public MainPage openPage() {
         driver.get(pageUrl);
@@ -46,6 +42,14 @@ public class MainPage extends BasePage{
     /** Находит запрашиваемый блок курсов */
     public void findCourseUnit (String unitName) {
         driver.findElement(By.xpath("//div[contains(@class, 'subtitle-new') and normalize-space(text())='" + unitName + "']"));
+    }
+
+    /** Фильтр по названию курса
+     * @return
+     */
+    public String findCourseByKeywords(String keywords) {
+        String courseName = lessonTitle.getAttribute("value");
+        return courseName;
     }
 
     /** Кликает по кнопке Больше курсов js, так как кнопка перекрыта другим элементом*/

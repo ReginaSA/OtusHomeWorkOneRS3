@@ -15,9 +15,6 @@ public abstract class BasePage {
     protected WebDriver driver;
     protected WebDriverWait wait;
 
-    public abstract void init(WebDriver driver);
 
     public static String baseUrl = "https://otus.ru/";
-
-
 }

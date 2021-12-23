@@ -8,6 +8,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.*;
+import utils.WebDriverFactory;
+
 import java.util.concurrent.TimeUnit;
 
 
@@ -21,9 +23,7 @@ public class FindCoursesTest {
 
     @BeforeClass
     public void setupWebDriver() {
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
-
+        driver = WebDriverFactory.setupDriver(WebDriverFactory.DriverType.CHROME);
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.manage().window().maximize();
     }
@@ -38,6 +38,8 @@ public class FindCoursesTest {
 
         MainPage mp = new MainPage(driver);
         mp.openPage().checkPage();
+        mp.findCourseByKeywords("Java");
+
         mp.findCourseUnit("Популярные курсы");
         mp.findAndClickMoreCourses();
 

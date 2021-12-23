@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import static org.testng.Assert.assertFalse;
@@ -14,16 +15,13 @@ public class CoursePage extends BasePage{
         super(driver);
     }
 
-    @Override
-    public void init(WebDriver driver) {
-    }
-
     By checkLocator = By.cssSelector(".lessons__page");
     String categoryCourse = "//div[@class='nav__items course-categories__nav']";
     public static String pageUrl = "categories/";
 
     @FindBy(css = ".lessons__new-item")
     WebElement blockLesson;
+
 
     /**
      * Переход на страницу
