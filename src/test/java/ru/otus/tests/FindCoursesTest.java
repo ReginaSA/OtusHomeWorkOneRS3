@@ -2,9 +2,7 @@ package ru.otus.tests;
 
 import pageobjects.CoursePage;
 import pageobjects.MainPage;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.*;
@@ -38,10 +36,12 @@ public class FindCoursesTest {
 
         MainPage mp = new MainPage(driver);
         mp.openPage().checkPage();
-        mp.findCourseByKeywords("Java");
+        mp.findCoursesOnPage();
+        mp.findCourseByKeywords("Специализация Android");
 
         mp.findCourseUnit("Популярные курсы");
         mp.findAndClickMoreCourses();
+
 
         CoursePage coursePage = new CoursePage(driver);
         coursePage.checkPage();

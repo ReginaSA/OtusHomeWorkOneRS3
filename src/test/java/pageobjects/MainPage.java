@@ -8,6 +8,9 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.testng.Assert.assertFalse;
 
 public class MainPage extends BasePage{
@@ -24,8 +27,8 @@ public class MainPage extends BasePage{
     @FindBy(xpath = "//a[contains(@class,'transitional-main__courses-more')]")
     WebElement openMoreCourses;
 
-    @FindBy(xpath = "//div[contains(@class, 'lessons__new-item-title')]")
-    WebElement lessonTitle;
+//    @FindBy(xpath = "//div[contains(@class, 'lessons__new-item-title')]")
+    By lessonTitle = By.xpath("//div[contains(@class, 'lessons__new-item-title')]");
 
     public MainPage openPage() {
         driver.get(pageUrl);
@@ -44,12 +47,34 @@ public class MainPage extends BasePage{
         driver.findElement(By.xpath("//div[contains(@class, 'subtitle-new') and normalize-space(text())='" + unitName + "']"));
     }
 
-    /** Фильтр по названию курса
+    /**
+     * Находит все курсы на страницы и возвращает массив веб-элементов
      * @return
      */
-    public String findCourseByKeywords(String keywords) {
-        String courseName = lessonTitle.getAttribute("value");
-        return courseName;
+    public List<WebElement> findCoursesOnPage() {
+        List<WebElement> coursesList = driver.findElements(lessonTitle);
+        return coursesList;
+    }
+
+    /**
+     * Перебирает массив списка курсов и ищет по ключевым словам
+     * @return
+     */
+
+    public ArrayList<ArrayList<String>> findCourseByKeywords(String keywords) {
+        List<WebElement> coursesList = findCoursesOnPage();
+
+        ArrayList<ArrayList<String>> listCoursesByKeywords = new ArrayList<>();
+
+        for (int i = 0; i < coursesList.size(); i++) {
+            ArrayList<String> courses = new ArrayList<String>();
+            courses.add(coursesList.get(i).getText());
+
+            if (courses.contains(keywords)) {
+                listCoursesByKeywords.add(courses);
+            }
+        }
+        return listCoursesByKeywords;
     }
 
     /** Кликает по кнопке Больше курсов js, так как кнопка перекрыта другим элементом*/
