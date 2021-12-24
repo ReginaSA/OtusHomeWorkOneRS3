@@ -69,6 +69,7 @@ public class MainPage extends BasePage{
         for (int i = 0; i < coursesList.size(); i++) {
             ArrayList<String> courses = new ArrayList<String>();
             courses.add(coursesList.get(i).getText());
+
             if (courses.contains(keywords)) {
                 listCoursesByKeywords.add(courses);
             }
@@ -76,7 +77,7 @@ public class MainPage extends BasePage{
         return listCoursesByKeywords;
     }
 
-    /** Кликает по кнопке Больше курсов js, так как кнопка перекрыта другим элементом*/
+    /** Кликает по кнопке Больше курсов js, так как кнопка перекрыта другим элементом */
     public void findAndClickMoreCourses() {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].click();", openMoreCourses);

@@ -1,17 +1,21 @@
 package ru.otus.tests;
 
-import pageobjects.CoursePage;
-import pageobjects.MainPage;
-import org.openqa.selenium.*;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+import pageobjects.MainPage;
 import utils.WebDriverFactory;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-
+/**
+ * Данный класс содержит тесты для поиска курсов по ключевым словам и по дате проведения
+ *
+ */
 public class FindCoursesTest {
 
     protected WebDriver driver;
@@ -32,13 +36,16 @@ public class FindCoursesTest {
         driver.quit();
     }
 
+    /**
+     * Тест находит курсы по ключевым словам на главной странице
+     */
     @Test
-    public void findPopularCoursesTest() {
+    public void findCoursesByKeywordTest() {
 
         MainPage mp = new MainPage(driver);
         mp.openPage().checkPage();
 
-        ArrayList<ArrayList<String>> courseListResult = mp.findCourseByKeywords("Специализация Android");
+        ArrayList<ArrayList<String>> courseListResult = mp.findCourseByKeywords("Android");
         System.out.println(courseListResult);
 
         if (courseListResult == null) {
