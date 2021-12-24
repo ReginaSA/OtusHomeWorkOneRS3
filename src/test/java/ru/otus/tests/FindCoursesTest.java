@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.*;
 import utils.WebDriverFactory;
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 
@@ -36,29 +37,27 @@ public class FindCoursesTest {
 
         MainPage mp = new MainPage(driver);
         mp.openPage().checkPage();
-        mp.findCoursesOnPage();
-        mp.findCourseByKeywords("Специализация Android");
 
-        mp.findCourseUnit("Популярные курсы");
-        mp.findAndClickMoreCourses();
+        ArrayList<ArrayList<String>> courseListResult = mp.findCourseByKeywords("Специализация Android");
+        System.out.println(courseListResult);
 
-
-        CoursePage coursePage = new CoursePage(driver);
-        coursePage.checkPage();
+        if (courseListResult == null) {
+            System.out.println("По Вашему запросу не найдено ни одного курса.");
+        }
     }
 
-    @Test
-    public void checkCategoryCoursePages() {
-        CoursePage coursePage = new CoursePage(driver);
-        coursePage.goToPage().checkPage();
-        coursePage.findAngGoToCategoryByName("Программирование")
-                .findAngGoToCategoryByName("Инфраструктура")
-                .findAngGoToCategoryByName("Data Science")
-                .findAngGoToCategoryByName("GameDev")
-                .findAngGoToCategoryByName("Управление")
-                .findAngGoToCategoryByName("Тестирование")
-                .findAngGoToCategoryByName("Корпоративные курсы");
-    }
+//    @Test
+//    public void checkCategoryCoursePages() {
+//        CoursePage coursePage = new CoursePage(driver);
+//        coursePage.goToPage().checkPage();
+//        coursePage.findAngGoToCategoryByName("Программирование")
+//                .findAngGoToCategoryByName("Инфраструктура")
+//                .findAngGoToCategoryByName("Data Science")
+//                .findAngGoToCategoryByName("GameDev")
+//                .findAngGoToCategoryByName("Управление")
+//                .findAngGoToCategoryByName("Тестирование")
+//                .findAngGoToCategoryByName("Корпоративные курсы");
+//    }
 
 
 }

@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,6 @@ public class MainPage extends BasePage{
     @FindBy(xpath = "//a[contains(@class,'transitional-main__courses-more')]")
     WebElement openMoreCourses;
 
-//    @FindBy(xpath = "//div[contains(@class, 'lessons__new-item-title')]")
     By lessonTitle = By.xpath("//div[contains(@class, 'lessons__new-item-title')]");
 
     public MainPage openPage() {
@@ -69,7 +69,6 @@ public class MainPage extends BasePage{
         for (int i = 0; i < coursesList.size(); i++) {
             ArrayList<String> courses = new ArrayList<String>();
             courses.add(coursesList.get(i).getText());
-
             if (courses.contains(keywords)) {
                 listCoursesByKeywords.add(courses);
             }
