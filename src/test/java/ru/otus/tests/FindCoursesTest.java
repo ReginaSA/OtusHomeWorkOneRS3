@@ -12,6 +12,7 @@ import pageobjects.MainPage;
 import utils.WebDriverFactory;
 import utils.listeners.MyListeners;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -60,7 +61,7 @@ public class FindCoursesTest {
     }
 
     @Test
-    public void checkCategoryCoursePages() {
+    public void checkCategoryCoursePages() throws ParseException {
         CoursePage coursePage = new CoursePage(driver);
         coursePage.goToPage().checkPage();
         coursePage.findAngGoToCategoryByName("Программирование")
