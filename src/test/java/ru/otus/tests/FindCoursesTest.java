@@ -1,18 +1,15 @@
 package ru.otus.tests;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import pageobjects.CoursePage;
 import pageobjects.MainPage;
 import utils.WebDriverFactory;
 import utils.listeners.MyListeners;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -61,11 +58,9 @@ public class FindCoursesTest {
     }
 
     @Test
-    public void checkCategoryCoursePages() throws ParseException {
-        CoursePage coursePage = new CoursePage(driver);
-        coursePage.goToPage().checkPage();
-        coursePage.findAngGoToCategoryByName("Программирование")
-                .checkPage()
-                .findDateCoursesOnPage();
-    }
+    public void checkCategoryCoursePages(){
+        MainPage mp = new MainPage(driver);
+        mp.openPage().checkPage();
+        mp.getInfoCourses();
+        }
 }

@@ -22,7 +22,7 @@ public class CoursePage extends BasePage{
 
     By checkLocator = By.cssSelector(".lessons__page");
     String categoryCourse = "//div[@class='nav__items course-categories__nav']";
-    By dateCourse = By.xpath("//div[@class='lessons__new-item-start']");
+    By dateCourse = By.xpath("//div[@class='lessons__new-item-container']");
     public static String pageUrl = "categories/";
 
     @FindBy(css = ".lessons__new-item")
@@ -66,6 +66,10 @@ public class CoursePage extends BasePage{
      */
     public List<WebElement> findDateCourses() {
         List<WebElement> coursesList = driver.findElements(dateCourse);
+        //выделить имя, дату и ссылку
+        //создать новую коллекцию объектов курсов
+        //запихать это в объект новый Course и его в колеекцию положить
+        //вернуть эту коллекцию
         return coursesList;
     }
 
@@ -85,7 +89,7 @@ public class CoursePage extends BasePage{
             dateAndNameCourse.add(String.valueOf(dateCoursesList));
         }
 
-        convertDateToFormat(dateAndNameCourse).addAll(dateAndNameCourse);
+//        convertDateToFormat(dateAndNameCourse).addAll(dateAndNameCourse);
         return dateAndNameCourse;
     }
 
@@ -97,6 +101,12 @@ public class CoursePage extends BasePage{
     private ArrayList<String> convertDateToFormat(ArrayList<String> args) throws ParseException {
 
         Locale russian = new Locale("ru");
+        HashMap<String, Integer> monthMap = new HashMap();
+        monthMap.put("января", 1);
+        monthMap.put("декабря", 12);
+
+
+
         String[] newMonths = {
                 "января", "февраля", "марта", "апреля", "мая", "июня",
                 "июля", "августа", "сентября", "октября", "ноября", "декабря"};
