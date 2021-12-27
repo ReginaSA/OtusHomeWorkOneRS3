@@ -5,9 +5,9 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ import static org.testng.Assert.assertFalse;
 
 public class MainPage extends BasePage{
 
-    public MainPage(WebDriver driver) {
+    public MainPage(EventFiringWebDriver driver) {
         super(driver);
     }
 
@@ -67,6 +67,7 @@ public class MainPage extends BasePage{
         ArrayList<ArrayList<String>> listCoursesByKeywords = new ArrayList<>();
 
         for (int i = 0; i < coursesList.size(); i++) {
+
             ArrayList<String> courses = new ArrayList<String>();
             courses.add(coursesList.get(i).getText());
 

@@ -3,9 +3,8 @@ package utils.listeners;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.events.WebDriverEventListener;
-import org.testng.ITestNGListener;
 
-public class MyListeners implements WebDriverEventListener, ITestNGListener {
+public class MyListeners implements WebDriverEventListener {
     @Override
     public void beforeAlertAccept(WebDriver driver) {
 
@@ -79,11 +78,16 @@ public class MyListeners implements WebDriverEventListener, ITestNGListener {
     @Override
     public void beforeClickOn(WebElement element, WebDriver driver) {
         ((JavascriptExecutor) driver).executeScript("arguments[0].style.border='3px solid red'", element);
+
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void afterClickOn(WebElement element, WebDriver driver) {
-
     }
 
     @Override
