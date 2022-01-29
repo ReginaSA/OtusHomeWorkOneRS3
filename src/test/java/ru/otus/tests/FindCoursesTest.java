@@ -1,8 +1,10 @@
 package ru.otus.tests;
 
+import helpers.Course;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -11,6 +13,7 @@ import utils.WebDriverFactory;
 import utils.listeners.MyListeners;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -43,17 +46,17 @@ public class FindCoursesTest {
     /**
      * Тест находит курсы по ключевым словам на главной странице
      */
-    @Test
+    @Test(description = "Тест находит курсы по ключевым словам на главной странице")
     public void findCoursesByKeywordTest() {
 
         MainPage mp = new MainPage(driver);
         mp.openPage().checkPage();
 
-        ArrayList<ArrayList<String>> courseListResult = mp.findCourseByKeywords("Специализация Java-разработчик");
-        System.out.println("По вашему запросу найден курс:" + courseListResult);
-
-        if (courseListResult == null) {
-            System.out.println("По Вашему запросу не найдено ни одного курса.");
+        ArrayList<String> courseListResult = mp.findCourseByKeywords("Java");
+        if (0 == courseListResult.size()) {
+            System.out.println("По запросу" + courseListResult + "не найдено ни одного курса.");
+        } else {
+            System.out.println("По вашему запросу найдены курсы:" + courseListResult);
         }
     }
 
@@ -61,6 +64,9 @@ public class FindCoursesTest {
     public void checkCategoryCoursePages(){
         MainPage mp = new MainPage(driver);
         mp.openPage().checkPage();
-        mp.getInfoCourses();
+        mp.findCoursesOnPage();
+        System.out.println(mp.earlyCourse());
+
+//        System.out.println(mp.getInfoCourses());
         }
 }

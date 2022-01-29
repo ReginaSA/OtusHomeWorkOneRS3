@@ -1,7 +1,6 @@
 package pageobjects;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
+import helpers.Course;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
@@ -10,6 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.testng.Assert.assertFalse;
 
@@ -27,32 +27,38 @@ public class MainPage extends BasePage{
     @FindBy(xpath = "//a[contains(@class,'transitional-main__courses-more')]")
     WebElement openMoreCourses;
 
-    //Локатор блока с информацией о курсе
-    By courseInfo = By.xpath("//div[@class='lessons__new-item-container']");
-    //Локатор названия курса
-    static By lessonTitle = By.xpath("//div[contains(@class, 'lessons__new-item-title')]");
-    //Локатор ссылки на курс
-    static By lessonUrl = By.xpath("//div[@class='lessons']/a[@href]");
-    //Локтор даты начала курса
-    static By timeStartLesson = By.xpath("//div[@class='lessons__new-item-time']");
-    static By timeStartPopularLesson = By.xpath("//div[@class='lessons__new-item-start']");
+    @FindBy(xpath = "//div[contains(@class, 'lessons__new-item-title')]")
+    private List<WebElement> coursesList;
 
-    public ArrayList<ArrayList> getInfoCourses() {
-        List<WebElement> courseName = driver.findElements(lessonTitle);
-        List<WebElement> courseUrl = driver.findElements(lessonUrl);
-        List<WebElement> courseTimeStart = driver.findElements(timeStartLesson);
-        List<WebElement> popCourseTimeStart = driver.findElements(timeStartPopularLesson);
+    @FindBy(xpath = "//div[@class='lessons__new-item-time']")
+    private List<WebElement> startDateOfCourses;
 
-        ArrayList<ArrayList> coursesList = new ArrayList<>();
+    @FindBy(xpath = "//div[contains(@class, 'lessons__new-item-title')]")
+    private List<WebElement> lessonTitle;
+
+    @FindBy(xpath = "//div[@class='lessons']/a[@href]")
+    private List<WebElement> lessonUrl;
+
+    public HashMap<Course.CourseFields, String> getInfoCourses() {
+        List<WebElement> courseName = lessonTitle;
+        List<WebElement> courseUrl = lessonUrl;
+        List<WebElement> courseTimeStart = startDateOfCourses;
+
+        HashMap<Course.CourseFields, String> coursesList = new HashMap<>();
         for(int j =0; j < courseName.size(); j++) {
-            ArrayList<String> courses = new ArrayList<String>();
-            courses.add(courseName.get(j).getText());
-            courses.add(courseUrl.get(j).getAttribute("href"));
-            courses.add(courseTimeStart.get(j).getText());
+            HashMap<Course.CourseFields, String> courses = new HashMap<>();
+            courses.put(Course.CourseFields.name, courseName.get(j).getText());
+            courses.put(Course.CourseFields.link, courseUrl.get(j).getAttribute("href"));
+            courses.put(Course.CourseFields.startDate, courseTimeStart.get(j).getText());
 
-            coursesList.add(courses);
+            coursesList.putAll(courses);
         }
         return coursesList;
+    }
+
+    public Course earlyCourse() {
+        Course course = new Course(getInfoCourses().get(Course.CourseFields.name), getInfoCourses().get(Course.CourseFields.link), getInfoCourses().get(Course.CourseFields.startDate));
+        return course;
     }
 
     public MainPage openPage() {
@@ -67,17 +73,12 @@ public class MainPage extends BasePage{
         wait.until(ExpectedConditions.textToBePresentInElement(pageTitle, "Авторские онлайн‑курсы"));
     }
 
-    /** Находит запрашиваемый блок курсов */
-    public void findCourseUnit (String unitName) {
-        driver.findElement(By.xpath("//div[contains(@class, 'subtitle-new') and normalize-space(text())='" + unitName + "']"));
-    }
-
     /**
      * Находит все курсы на странице и возвращает массив веб-элементов
      * @return
      */
     public List<WebElement> findCoursesOnPage() {
-        List<WebElement> coursesList = driver.findElements(lessonTitle);
+        List<WebElement> coursesList = this.coursesList;
         return coursesList;
     }
 
@@ -86,26 +87,19 @@ public class MainPage extends BasePage{
      * @return
      */
 
-    public ArrayList<ArrayList<String>> findCourseByKeywords(String keywords) {
+    public ArrayList<String> findCourseByKeywords(String keywords) {
         List<WebElement> coursesList = findCoursesOnPage();
 
-        ArrayList<ArrayList<String>> listCoursesByKeywords = new ArrayList<>();
+        ArrayList<String> listCoursesByKeywords = new ArrayList<>();
 
         for (int i = 0; i < coursesList.size(); i++) {
 
-            ArrayList<String> courses = new ArrayList<String>();
-            courses.add(coursesList.get(i).getText());
+            String courses = coursesList.get(i).getText();
 
             if (courses.contains(keywords)) {
                 listCoursesByKeywords.add(courses);
             }
         }
         return listCoursesByKeywords;
-    }
-
-    /** Кликает по кнопке Больше курсов js, так как кнопка перекрыта другим элементом */
-    public void findAndClickMoreCourses() {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("arguments[0].click();", openMoreCourses);
     }
 }
