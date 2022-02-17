@@ -1,7 +1,9 @@
 package helpers;
 
 public class Course {
-    String name, link, rawDate;
+    String name;
+    String link;
+    String rawDate;
     long timeStart;
     static long timeStartBegin = 100000000;
 

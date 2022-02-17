@@ -12,8 +12,7 @@ import pageobjects.MainPage;
 import utils.WebDriverFactory;
 import utils.listeners.MyListeners;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -54,18 +53,22 @@ public class FindCoursesTest {
 
         ArrayList<String> courseListResult = mp.findCourseByKeywords("Java");
         if (0 == courseListResult.size()) {
-            System.out.println("По запросу" + courseListResult + "не найдено ни одного курса.");
+            System.out.println("По Вашему запросу не найдено ни одного курса.");
         } else {
             System.out.println("По вашему запросу найдены курсы:" + courseListResult);
         }
     }
 
     @Test
-    public void checkCategoryCoursePages(){
+    public void findEarlyCourse(){
         MainPage mp = new MainPage(driver);
         mp.openPage().checkPage();
-        mp.findCoursesOnPage();
-        System.out.println(mp.earlyCourse());
+        mp.getInfoCourses();
+        Date date = mp.getFirstCourse();
+        System.out.println(date);
+
+
+
 
 //        System.out.println(mp.getInfoCourses());
         }

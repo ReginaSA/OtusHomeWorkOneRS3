@@ -6,14 +6,10 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-
 import java.util.*;
-import java.util.stream.Collectors;
-
 import static org.testng.Assert.assertFalse;
 
-public class MainPage extends BasePage{
+public class MainPage extends BasePage {
 
     public MainPage(EventFiringWebDriver driver) {
         super(driver);
@@ -39,26 +35,28 @@ public class MainPage extends BasePage{
     @FindBy(xpath = "//div[@class='lessons']/a[@href]")
     private List<WebElement> lessonUrl;
 
-    public HashMap<Course.CourseFields, String> getInfoCourses() {
+    public ArrayList<Course> getInfoCourses() {
         List<WebElement> courseName = lessonTitle;
         List<WebElement> courseUrl = lessonUrl;
         List<WebElement> courseTimeStart = startDateOfCourses;
 
-        HashMap<Course.CourseFields, String> coursesList = new HashMap<>();
-        for(int j =0; j < courseName.size(); j++) {
-            HashMap<Course.CourseFields, String> courses = new HashMap<>();
-            courses.put(Course.CourseFields.name, courseName.get(j).getText());
-            courses.put(Course.CourseFields.link, courseUrl.get(j).getAttribute("href"));
-            courses.put(Course.CourseFields.startDate, courseTimeStart.get(j).getText());
+        ArrayList<Course> coursesList = new ArrayList<>();
+        for (int j = 0; j < courseName.size(); j++) {
+            Course course = new Course(
+                    courseName.get(j).getText(),
+                    courseUrl.get(j).getAttribute("href"),
+                    courseTimeStart.get(j).getText()
+            );
 
-            coursesList.putAll(courses);
+            coursesList.add(course);
         }
         return coursesList;
     }
 
-    public Course earlyCourse() {
-        Course course = new Course(getInfoCourses().get(Course.CourseFields.name), getInfoCourses().get(Course.CourseFields.link), getInfoCourses().get(Course.CourseFields.startDate));
-        return course;
+    public Date getFirstCourse() {
+        ArrayList<Course> courses = getInfoCourses();
+        Date maxDate = courses.stream().map(u -> u.getRawDate()).max(Date::compareTo).get();
+        return maxDate;
     }
 
     public MainPage openPage() {
@@ -66,7 +64,9 @@ public class MainPage extends BasePage{
         return this;
     }
 
-    /** Проверка, что страница открылась и доступна */
+    /**
+     * Проверка, что страница открылась и доступна
+     */
     public void checkPage() {
         WebDriverWait wait = new WebDriverWait(driver, 10);
         assertFalse(driver.getPageSource().contains("error404"));
@@ -75,6 +75,7 @@ public class MainPage extends BasePage{
 
     /**
      * Находит все курсы на странице и возвращает массив веб-элементов
+     *
      * @return
      */
     public List<WebElement> findCoursesOnPage() {
@@ -84,6 +85,7 @@ public class MainPage extends BasePage{
 
     /**
      * Перебирает массив списка курсов и ищет нужный курс по заголовку
+     *
      * @return
      */
 
