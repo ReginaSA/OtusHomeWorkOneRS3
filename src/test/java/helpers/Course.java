@@ -1,6 +1,5 @@
 package helpers;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.MonthDay;
 import java.time.format.DateTimeFormatter;
@@ -20,17 +19,11 @@ public class Course {
         this.timeStartBegin = timeStartBegin;
     }
 
-    public Course(String name, String link, String rawDate) throws ParseException {
+    public Course(String name, String link, String rawDate){
         this.name = name;
         this.link = link;
         this.rawDate = rawDate;
         this.timeStartBegin = this.rawDateToTime(rawDate);
-    }
-
-    public enum CourseFields {
-        name,
-        link,
-        startDate
     }
 
     public String getName() {

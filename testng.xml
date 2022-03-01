@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="All Test Suite">
-
-<listeners>
-    <listener class-name="utils.listeners.MyListeners"></listener>
-</listeners>
-
-    <test verbose="2" preserve-order="true" name="/home/regina/IdeaProjects/OtusHomeWorkOneRS">
+    <test verbose="2" preserve-order="true" name="C:/Users/rsoro/OneDrive/���������/GitHub/OtusHomeWorkOneRS3/src/test">
         <classes>
             <class name="ru.otus.tests.FindCoursesTest">
                 <methods>
-                    <include name="findPopularCoursesTest"/>
-                    <include name="checkCategoryCoursePages"/>
+                    <include name="findCoursesByKeywordTest"/>
+                    <include name="findEarlyCourse"/>
+                    <include name="findLatestCourse"/>
                 </methods>
             </class>
         </classes>
