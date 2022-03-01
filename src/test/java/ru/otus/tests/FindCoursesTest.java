@@ -12,6 +12,7 @@ import pageobjects.MainPage;
 import utils.WebDriverFactory;
 import utils.listeners.MyListeners;
 
+import java.text.ParseException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -59,12 +60,20 @@ public class FindCoursesTest {
     }
 
     @Test
-    public void findEarlyCourse(){
+    public void findEarlyCourse() throws ParseException {
         MainPage mp = new MainPage(driver);
         mp.openPage().checkPage();
-        mp.getInfoCourses();
-        mp.getFirstCourse();
-
-        System.out.println();
+        Course beforeCourse = mp.getBeforeCourse();
+        System.out.println("Самый ранний курс '" + beforeCourse.getName() + "' стартует " + beforeCourse.getRawDate()
+        + " чтобы узнать подробнее, перейдите по ссылке: " + beforeCourse.getLink());
         }
+
+    @Test
+    public void findLatestCourse() throws ParseException {
+        MainPage mp = new MainPage(driver);
+        mp.openPage().checkPage();
+        Course afterCourse = mp.getAfterCourse();
+        System.out.println("Самый поздний курс '" + afterCourse.getName() + "' стартует " + afterCourse.getRawDate()
+                + " чтобы узнать подробнее, перейдите по ссылке: " + afterCourse.getLink());
+    }
 }

@@ -7,8 +7,9 @@ import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.text.DateFormatSymbols;
+import java.text.ParseException;
 import java.util.*;
+
 import static org.testng.Assert.assertFalse;
 
 public class MainPage extends BasePage {
@@ -28,7 +29,7 @@ public class MainPage extends BasePage {
     @FindBy(xpath = "//div[contains(@class, 'lessons__new-item-title')]")
     private List<WebElement> coursesList;
 
-    @FindBy(xpath = "//div[@class='lessons__new-item-time']")
+    @FindBy(xpath = "//div[@class='lessons__new-item-start']")
     private List<WebElement> startDateOfCourses;
 
     @FindBy(xpath = "//div[contains(@class, 'lessons__new-item-title')]")
@@ -37,13 +38,13 @@ public class MainPage extends BasePage {
     @FindBy(xpath = "//div[@class='lessons']/a[@href]")
     private List<WebElement> lessonUrl;
 
-    public ArrayList<Course> getInfoCourses() {
+    public ArrayList<Course> getInfoCourses() throws ParseException {
         List<WebElement> courseName = lessonTitle;
         List<WebElement> courseUrl = lessonUrl;
         List<WebElement> courseTimeStart = startDateOfCourses;
 
         ArrayList<Course> coursesList = new ArrayList<>();
-        for (int j = 0; j < courseName.size(); j++) {
+        for (int j = 0; j < courseTimeStart.size(); j++) {
             Course course = new Course(
                     courseName.get(j).getText(),
                     courseUrl.get(j).getAttribute("href"),
@@ -55,17 +56,16 @@ public class MainPage extends BasePage {
         return coursesList;
     }
 
-    public void getFirstCourse() {
+    public Course getBeforeCourse() throws ParseException {
         ArrayList<Course> courses = getInfoCourses();
-        courses.stream()
-                .map(Course::getRawDate)
-                .sorted()
-                .peek(System.out::println);
-        System.out.println();
+        Collections.sort(courses, Comparator.comparing(Course::getTimeStartBegin));
+        return courses.get(0);
+    }
 
-//                .max((Comparator.comparing(o -> o)))
-
-
+    public Course getAfterCourse() throws ParseException {
+        ArrayList<Course> courses = getInfoCourses();
+        Collections.min(courses, Comparator.comparing(Course::getTimeStartBegin));
+        return courses.get(0);
     }
 
     public MainPage openPage() {

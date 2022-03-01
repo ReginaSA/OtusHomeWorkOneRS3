@@ -1,17 +1,30 @@
 package helpers;
 
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.MonthDay;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
 public class Course {
     String name;
     String link;
     String rawDate;
-    long timeStart;
-    static long timeStartBegin = 100000000;
+    LocalDate timeStartBegin;
 
-    public Course(String name, String link, String rawDate) {
+    public LocalDate getTimeStartBegin() {
+        return timeStartBegin;
+    }
+
+    public void setTimeStartBegin(LocalDate timeStartBegin) {
+        this.timeStartBegin = timeStartBegin;
+    }
+
+    public Course(String name, String link, String rawDate) throws ParseException {
         this.name = name;
         this.link = link;
         this.rawDate = rawDate;
-        this.timeStart = this.rawDateToTime(rawDate);
+        this.timeStartBegin = this.rawDateToTime(rawDate);
     }
 
     public enum CourseFields {
@@ -44,26 +57,19 @@ public class Course {
         this.rawDate = rawDate;
     }
 
-    public long getTimeStart() {
-        return timeStart;
+    private LocalDate convertDateToFormat(String rawDate) {
+
+        int year = 2022;
+        String newRawDate = rawDate.replace("С ", "");
+        Locale russian = new Locale("ru");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM", russian);
+        LocalDate localDate = MonthDay.parse(newRawDate, formatter).atYear(year);
+
+        return localDate;
     }
 
-    public void setTimeStart(long timeStart) {
-        this.timeStart = timeStart;
-    }
-
-    public static long getTimeStartBegin() {
-        return timeStartBegin;
-    }
-
-    public static void setTimeStartBegin(long timeStartBegin) {
-        Course.timeStartBegin = timeStartBegin;
-    }
-
-
-
-    private long rawDateToTime(String rawDate) {
-        timeStartBegin += 2000 + rawDate.length();
+    private LocalDate rawDateToTime(String rawDate) {
+        LocalDate timeStartBegin = convertDateToFormat(rawDate);
 
         return timeStartBegin;
     }
