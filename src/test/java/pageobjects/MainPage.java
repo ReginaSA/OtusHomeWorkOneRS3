@@ -6,6 +6,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.text.DateFormatSymbols;
 import java.util.*;
 import static org.testng.Assert.assertFalse;
 
@@ -53,10 +55,17 @@ public class MainPage extends BasePage {
         return coursesList;
     }
 
-    public Date getFirstCourse() {
+    public void getFirstCourse() {
         ArrayList<Course> courses = getInfoCourses();
-        Date maxDate = courses.stream().map(u -> u.getRawDate()).max(Date::compareTo).get();
-        return maxDate;
+        courses.stream()
+                .map(Course::getRawDate)
+                .sorted()
+                .peek(System.out::println);
+        System.out.println();
+
+//                .max((Comparator.comparing(o -> o)))
+
+
     }
 
     public MainPage openPage() {

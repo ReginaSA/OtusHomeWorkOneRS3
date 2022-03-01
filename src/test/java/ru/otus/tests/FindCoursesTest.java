@@ -29,7 +29,6 @@ public class FindCoursesTest {
 
     @BeforeClass
     public void setupWebDriver() {
-//        driver = WebDriverFactory.setupDriver(WebDriverFactory.DriverType.CHROME);
         driver = new EventFiringWebDriver(WebDriverFactory.setupDriver(WebDriverFactory.DriverType.CHROME));
         driver.register(new MyListeners());
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
@@ -64,12 +63,8 @@ public class FindCoursesTest {
         MainPage mp = new MainPage(driver);
         mp.openPage().checkPage();
         mp.getInfoCourses();
-        Date date = mp.getFirstCourse();
-        System.out.println(date);
+        mp.getFirstCourse();
 
-
-
-
-//        System.out.println(mp.getInfoCourses());
+        System.out.println();
         }
 }
