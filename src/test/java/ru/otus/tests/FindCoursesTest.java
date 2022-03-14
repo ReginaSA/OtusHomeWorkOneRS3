@@ -1,17 +1,17 @@
 package ru.otus.tests;
 
 import helpers.Course;
-import helpers.Property;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.testng.annotations.*;
 import pageobjects.MainPage;
-import utils.WebDriverFactory;
 import utils.listeners.MyListeners;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
+
+import static utils.WebDriverFactory.setupDriver;
 
 /**
  * Данный класс содержит тесты для поиска курсов по ключевым словам и по дате проведения
@@ -22,8 +22,7 @@ public class FindCoursesTest {
 
     @BeforeClass
     public void setupWebDriver() throws IOException {
-        WebDriverFactory.DriverType browserName = new Property().getBrowser();
-        driver = new EventFiringWebDriver(WebDriverFactory.setupDriver(browserName));
+        driver = new EventFiringWebDriver(setupDriver(System.getProperty("browser")));
         driver.register(new MyListeners());
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.manage().window().maximize();
@@ -43,7 +42,7 @@ public class FindCoursesTest {
 
         MainPage mp = new MainPage(driver);
         mp.openPage().checkPage();
-        String keywords = new Property().getKeywords();
+        String keywords = System.getProperty("keywords");
         ArrayList<String> courseListResult = mp.findCourseByKeywords(keywords);
         if (0 == courseListResult.size()) {
             System.out.println("По Вашему запросу не найдено ни одного курса.");
