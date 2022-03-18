@@ -78,8 +78,8 @@ public class MainPage extends BasePage {
      */
     public Course getAfterCourse() throws ParseException {
         ArrayList<Course> courses = getInfoCourses();
-        Collections.min(courses, Comparator.comparing(Course::getTimeStartBegin));
-        return courses.get(0);
+        Collections.sort(courses, Comparator.comparing(Course::getTimeStartBegin));
+        return courses.get(courses.size() - 1);
     }
 
     /**
