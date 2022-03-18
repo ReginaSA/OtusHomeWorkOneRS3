@@ -15,37 +15,30 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.testng.Assert.assertFalse;
 
 public class MainPage extends BasePage {
 
-    public MainPage(EventFiringWebDriver driver) {
-        super(driver);
+    public MainPage(EventFiringWebDriver driver, String url) {
+        super(driver, url);
     }
 
-    String pageUrl = "https://otus.ru/";
-
-    @FindBy(xpath = "//h1[contains(text(), 'Авторские онлайн‑курсы')]")
+    @FindBy(css = ".title-new__text")
     WebElement pageTitle;
 
-    @FindBy(xpath = "//div[contains(@class, 'lessons__new-item-title')]")
-    private List<WebElement> coursesList;
+    @FindBy(css = ".lessons__new-item-title")
+    protected List<WebElement> coursesList;
 
-    @FindBy(xpath = "//div[@class='lessons__new-item-start']")
-    private List<WebElement> startDateOfCourses;
+    @FindBy(css = ".lessons__new-item-start")
+    protected List<WebElement> startDateOfCourses;
 
-    @FindBy(xpath = "//div[contains(@class, 'lessons__new-item-title')]")
-    private List<WebElement> lessonTitle;
+    @FindBy(css = ".lessons__new-item-title")
+    protected List<WebElement> lessonTitle;
 
     @FindBy(xpath = "//div[@class='lessons']/a[@href]")
-    private List<WebElement> lessonUrl;
-
-
-    public MainPage openPage() {
-        driver.get(pageUrl);
-        return this;
-    }
+    protected List<WebElement> lessonUrl;
 
     /**
      * Проверка, что страница открылась и доступна
@@ -57,17 +50,14 @@ public class MainPage extends BasePage {
     }
 
     /** Метод выбирает список популярных курсов */
-    public ArrayList<Course> getInfoCourses() throws ParseException {
-        List<WebElement> courseName = lessonTitle;
-        List<WebElement> courseUrl = lessonUrl;
-        List<WebElement> courseTimeStart = startDateOfCourses;
+    public ArrayList<Course> getInfoCourses() {
 
         ArrayList<Course> coursesList = new ArrayList<>();
-        for (int j = 0; j < courseTimeStart.size(); j++) {
+        for (int j = 0; j < startDateOfCourses.size(); j++) {
             Course course = new Course(
-                    courseName.get(j).getText(),
-                    courseUrl.get(j).getAttribute("href"),
-                    courseTimeStart.get(j).getText()
+                    lessonTitle.get(j).getText(),
+                    lessonUrl.get(j).getAttribute("href"),
+                    startDateOfCourses.get(j).getText()
             );
 
             coursesList.add(course);
@@ -106,34 +96,13 @@ public class MainPage extends BasePage {
     }
 
     /**
-     * Находит все курсы на странице и возвращает массив веб-элементов
-     *
-     * @return
-     */
-    public List<WebElement> findCoursesOnPage() {
-        List<WebElement> coursesList = this.coursesList;
-        return coursesList;
-    }
-
-    /**
      * Перебирает массив списка курсов и ищет нужный курс по заголовку
-     *
-     * @return
      */
-
     public ArrayList<String> findCourseByKeywords(String keywords) {
-        List<WebElement> coursesList = findCoursesOnPage();
-
-        ArrayList<String> listCoursesByKeywords = new ArrayList<>();
-
-        for (int i = 0; i < coursesList.size(); i++) {
-
-            String courses = coursesList.get(i).getText();
-
-            if (courses.contains(keywords)) {
-                listCoursesByKeywords.add(courses);
-            }
-        }
+        ArrayList<String> listCoursesByKeywords = (ArrayList<String>) coursesList.stream()
+                .map(WebElement::getText)
+                .filter(coursesList -> coursesList.contains(keywords))
+                .collect(Collectors.toList());
         return listCoursesByKeywords;
     }
 }

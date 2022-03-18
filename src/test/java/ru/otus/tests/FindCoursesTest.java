@@ -1,39 +1,19 @@
 package ru.otus.tests;
 
 import helpers.Course;
-import helpers.Property;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.testng.annotations.*;
 import pageobjects.MainPage;
-import utils.WebDriverFactory;
-import utils.listeners.MyListeners;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Данный класс содержит тесты для поиска курсов по ключевым словам и по дате проведения
  */
-public class FindCoursesTest {
+public class FindCoursesTest extends SuiteFixtures{
 
-    protected EventFiringWebDriver driver;
-
-    @BeforeClass
-    public void setupWebDriver() throws IOException {
-        WebDriverFactory.DriverType browserName = new Property().getBrowser();
-        driver = new EventFiringWebDriver(WebDriverFactory.setupDriver(browserName));
-        driver.register(new MyListeners());
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        driver.manage().window().maximize();
-
-    }
-
-    @AfterClass
-    public void clearTestDate() {
-        driver.quit();
-    }
+    public String url = "https://otus.ru/";
 
     /**
      * Тест находит курсы по ключевым словам на главной странице
@@ -41,9 +21,10 @@ public class FindCoursesTest {
     @Test(description = "Тест находит курсы по ключевым словам на главной странице")
     public void findCoursesByKeywordTest() throws IOException {
 
-        MainPage mp = new MainPage(driver);
-        mp.openPage().checkPage();
-        String keywords = new Property().getKeywords();
+        MainPage mp = new MainPage(driver, url);
+        mp.openPage();
+        mp.checkPage();
+        String keywords = System.getProperty("keywords");
         ArrayList<String> courseListResult = mp.findCourseByKeywords(keywords);
         if (0 == courseListResult.size()) {
             System.out.println("По Вашему запросу не найдено ни одного курса.");
@@ -57,8 +38,9 @@ public class FindCoursesTest {
      */
     @Test
     public void findEarlyCourse() throws ParseException {
-        MainPage mp = new MainPage(driver);
-        mp.openPage().checkPage();
+        MainPage mp = new MainPage(driver, url);
+        mp.openPage();
+        mp.checkPage();
         Course beforeCourse = mp.getBeforeCourse();
         System.out.println("Самый ранний курс '" + beforeCourse.getName() + "' стартует " + beforeCourse.getRawDate()
                 + " чтобы узнать подробнее, перейдите по ссылке: " + beforeCourse.getLink());
@@ -69,8 +51,9 @@ public class FindCoursesTest {
      */
     @Test
     public void findLatestCourse() throws ParseException {
-        MainPage mp = new MainPage(driver);
-        mp.openPage().checkPage();
+        MainPage mp = new MainPage(driver, url);
+        mp.openPage();
+        mp.checkPage();
         Course afterCourse = mp.getAfterCourse();
         System.out.println("Самый поздний курс '" + afterCourse.getName() + "' стартует " + afterCourse.getRawDate()
                 + " чтобы узнать подробнее, перейдите по ссылке: " + afterCourse.getLink());

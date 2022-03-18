@@ -4,17 +4,24 @@ import org.openqa.selenium.support.PageFactory;;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public abstract class BasePage {
+public class BasePage<T> {
 
-    public BasePage(EventFiringWebDriver driver) {
+    protected T page;
+
+    protected EventFiringWebDriver driver;
+    protected WebDriverWait wait;
+    protected String url;
+
+    public BasePage(EventFiringWebDriver driver, String url) {
         this.driver = driver;
+        this.url = url;
+
         wait = new WebDriverWait(driver, 10);
         PageFactory.initElements(driver, this);
     }
 
-    protected EventFiringWebDriver driver;
-    protected WebDriverWait wait;
-
-
-    public static String baseUrl = "https://otus.ru/";
+    public T openPage() {
+        driver.get(url);
+        return this.page;
+    }
 }

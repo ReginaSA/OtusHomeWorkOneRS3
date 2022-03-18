@@ -10,25 +10,18 @@ import org.openqa.selenium.safari.SafariDriver;
 
 public class WebDriverFactory {
 
-    public static enum DriverType {
-        CHROME,
-        SAFARI,
-        FIREFOX,
-        OPERA,
-    }
-
-    public static WebDriver setupDriver(DriverType driverType) {
+    public static WebDriver setupDriver(String driverType) {
         switch (driverType) {
-            case CHROME:
+            case "CHROME":
                 WebDriverManager.chromedriver().setup();
                 return new ChromeDriver();
-            case SAFARI:
+            case "SAFARI":
                 WebDriverManager.safaridriver().setup();
                 return new SafariDriver();
-            case FIREFOX:
+            case "FIREFOX":
                 WebDriverManager.firefoxdriver().setup();
                 return new FirefoxDriver();
-            case OPERA:
+            case "OPERA":
                 WebDriverManager.operadriver().setup();
                 return new OperaDriver();
             default:
