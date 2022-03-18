@@ -13,13 +13,15 @@ import java.util.ArrayList;
  */
 public class FindCoursesTest extends SuiteFixtures{
 
+    public String url = "https://otus.ru/";
+
     /**
      * Тест находит курсы по ключевым словам на главной странице
      */
     @Test(description = "Тест находит курсы по ключевым словам на главной странице")
     public void findCoursesByKeywordTest() throws IOException {
 
-        MainPage mp = new MainPage(driver);
+        MainPage mp = new MainPage(driver, url);
         mp.openPage();
         mp.checkPage();
         String keywords = System.getProperty("keywords");
@@ -36,7 +38,7 @@ public class FindCoursesTest extends SuiteFixtures{
      */
     @Test
     public void findEarlyCourse() throws ParseException {
-        MainPage mp = new MainPage(driver);
+        MainPage mp = new MainPage(driver, url);
         mp.openPage();
         mp.checkPage();
         Course beforeCourse = mp.getBeforeCourse();
@@ -49,7 +51,7 @@ public class FindCoursesTest extends SuiteFixtures{
      */
     @Test
     public void findLatestCourse() throws ParseException {
-        MainPage mp = new MainPage(driver);
+        MainPage mp = new MainPage(driver, url);
         mp.openPage();
         mp.checkPage();
         Course afterCourse = mp.getAfterCourse();

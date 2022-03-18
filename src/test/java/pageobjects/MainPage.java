@@ -15,29 +15,30 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.testng.Assert.assertFalse;
 
 public class MainPage extends BasePage {
 
-    public MainPage(EventFiringWebDriver driver) {
-        super(driver);
+    public MainPage(EventFiringWebDriver driver, String url) {
+        super(driver, url);
     }
 
     @FindBy(css = ".title-new__text")
     WebElement pageTitle;
 
     @FindBy(css = ".lessons__new-item-title")
-    private List<WebElement> coursesList;
+    protected List<WebElement> coursesList;
 
     @FindBy(css = ".lessons__new-item-start")
-    private List<WebElement> startDateOfCourses;
+    protected List<WebElement> startDateOfCourses;
 
     @FindBy(css = ".lessons__new-item-title")
-    private List<WebElement> lessonTitle;
+    protected List<WebElement> lessonTitle;
 
     @FindBy(xpath = "//div[@class='lessons']/a[@href]")
-    private List<WebElement> lessonUrl;
+    protected List<WebElement> lessonUrl;
 
     /**
      * Проверка, что страница открылась и доступна
@@ -94,20 +95,14 @@ public class MainPage extends BasePage {
         crs.click();
     }
 
-
     /**
      * Перебирает массив списка курсов и ищет нужный курс по заголовку
-     *
      */
-
     public ArrayList<String> findCourseByKeywords(String keywords) {
-        ArrayList<String> listCoursesByKeywords = new ArrayList<>();
-        for (int i = 0; i < coursesList.size(); i++) {
-            String courses = coursesList.get(i).getText();
-            if (courses.contains(keywords)) {
-                listCoursesByKeywords.add(courses);
-            }
-        }
+        ArrayList<String> listCoursesByKeywords = (ArrayList<String>) coursesList.stream()
+                .map(WebElement::getText)
+                .filter(coursesList -> coursesList.contains(keywords))
+                .collect(Collectors.toList());
         return listCoursesByKeywords;
     }
 }

@@ -6,21 +6,22 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class BasePage<T> {
 
-    private T page;
+    protected T page;
 
     protected EventFiringWebDriver driver;
     protected WebDriverWait wait;
+    protected String url;
 
-    public static String baseUrl = "https://otus.ru/";
-
-    public BasePage(EventFiringWebDriver driver) {
+    public BasePage(EventFiringWebDriver driver, String url) {
         this.driver = driver;
+        this.url = url;
+
         wait = new WebDriverWait(driver, 10);
         PageFactory.initElements(driver, this);
     }
 
     public T openPage() {
-        driver.get(baseUrl);
-        return page;
+        driver.get(url);
+        return this.page;
     }
 }
